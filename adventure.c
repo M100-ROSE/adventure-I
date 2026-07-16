@@ -41,8 +41,8 @@ char inicio[40][122] =  {
     "*************************++++++++++++++++++++++==+++++++++-=-++---+++++++++++++++++++*****+*****************************\n",
     "*****************************++***********++++++++++++++++++++++++++++++++++++**********+*******************************\n",
     "*********************************************++*************+++++********+**********************************************\n",
-    "                                           .                    .-..--::  - .:                                          \n",
-    "                                          :. ::::.:.:....::..  :::.... .. : .:                                          \n",
+    "                                          ... .- .--. . .-. . / .- ..- -.. .                                            \n",
+    "                                   ...- . -. .. / ...- .. -.. .. / ...- .. -.-. ..                                      \n",
     "                                                                                                                        \n",
     "                                                 pressione enter...                                                     \n"
 };
@@ -85,7 +85,7 @@ char sala01[37][125] = {
     "##################################################-                   -#################################################\n",
     "##################################################-                   -#################################################\n"
 };
-
+// saida eixo y = 35 eixo x = 50 a 70
 char castelo[37][125] = {
     "##########################-   -#-   -#-   -#-   -#-                   -#-   -#-   -#-   -#-   -##########################\n",
     "##########################-   -#-   -#-   -#-   -#-                   -#-   -#-   -#-   -#-   -##########################\n",
@@ -109,12 +109,12 @@ char castelo[37][125] = {
     "#####-                              -###############################################-                              -#####\n",
     "#####-                              -###############################################-                              -#####\n",
     "#####-                              -#################---#-##-#----#################-                              -#####\n",
-    "#####-                              -################-   - -- -    -################-                              -#####\n",
-    "#####-                              -################-   ------    -################-                              -#####\n",
-    "#####-                              -################-   ------    -################-                              -#####\n",
-    "#####-                              -################-   - -- -    -################-                              -#####\n",
-    "#####-                              -################-   ------    -################-                              -#####\n",
-    "#####-                              ------------------   ------    ------------------                              -#####\n",
+    "#####-                              -################-              -################-                             -#####\n",
+    "#####-                           -################-                    -################-                          -#####\n",
+    "#####-                           -################-                    -################-                          -#####\n",
+    "#####-                           -################-                    -################-                          -#####\n",
+    "#####-                           -################-                    -################-                          -#####\n",
+    "#####-                           ------------------                    ------------------                          -#####\n",
     "#####-                                                                                                             -#####\n",
     "#####-                                                                                                             -#####\n",
     "#####-                                                                                                             -#####\n",
@@ -145,28 +145,59 @@ int main(void){
             mapaAtual = 1;
             MostrarMapa(mapaAtual);
         }
-    } else{
+        } else{
 
 
-        while(mapaAtual != 0){
-            AndarPlayer();
+            while(mapaAtual != 0){
+                AndarPlayer();
+            }
         }
     }
 }
-}
 
-void AndarPlayer(){
+void AndarEntreSalas(void){
+    switch(mapaAtual){
+        case 1: 
+            if(personagemEixoYAtual[1] == 34 && personagemEixoXAtual[0] > 50 && personagemEixoXAtual[0] < 70){
+                    mapaAtual = 2;
+                    personagemEixoYAtual[0] = 23;
+                    personagemEixoYAtual[1] = 24;
+                    for(int y = 0; y<2; y++){
+                        for(int x = 0; x<3; x++){
+                            sala01[personagemEixoYAntigo[y]][personagemEixoXAntigo[x]] = ' ';
+                        }
+                    }
+                    MostrarMapa(mapaAtual);
+            }
+            break;
+        case 2:
+            if(personagemEixoYAtual[0] == 22 && personagemEixoXAtual[0] > 50 && personagemEixoXAtual[0] < 70){
+                    mapaAtual = 1;
+                    personagemEixoYAtual[0] = 32;
+                    personagemEixoYAtual[1] = 33;
+                    for(int y = 0; y<2; y++){
+                        for(int x = 0; x<3; x++){
+                            castelo[personagemEixoYAntigo[y]][personagemEixoXAntigo[x]] = ' ';
+                        }
+                    }
+                    MostrarMapa(mapaAtual);
+            }
+    }
+}
+void AndarPlayer(void){
+
         tecla = getch();
         tecla = tolower(tecla); 
         switch(mapaAtual){
             case 1:
                 if(tecla == 'w'){
                     if(sala01[personagemEixoYAntigo[0]-1][personagemEixoXAntigo[0]] == '-' || sala01[personagemEixoYAntigo[0]-1][personagemEixoXAntigo[1]] == '-' || sala01[personagemEixoYAntigo[0]-1][personagemEixoXAntigo[2]] == '-'){
-                    return;
+                        return;
                     }else {
                         for(int y = 0; y<2; y++){
                             personagemEixoYAtual[y]--;
                         }
+                        
                     }
                     MostrarMapa(mapaAtual);
                 }else if(tecla == 's'){
@@ -176,6 +207,7 @@ void AndarPlayer(){
                         for(int y = 0; y<2; y++){
                             personagemEixoYAtual[y]++;
                         }
+                        
                     }
                     MostrarMapa(mapaAtual);
                 }else if(tecla == 'a'){
@@ -195,8 +227,9 @@ void AndarPlayer(){
                             personagemEixoXAtual[x]++;
                         }
                     }
-                    MostrarMapa(mapaAtual);
                 }
+                AndarEntreSalas();
+                MostrarMapa(mapaAtual);
                 break;
             case 2: 
                 if(tecla == 'w'){
@@ -234,8 +267,9 @@ void AndarPlayer(){
                             personagemEixoXAtual[x]++;
                         }
                     }
-                    MostrarMapa(mapaAtual);
                 }
+                AndarEntreSalas();
+                MostrarMapa(mapaAtual);
                 break;
         }
 }
